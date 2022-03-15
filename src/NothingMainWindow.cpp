@@ -1,65 +1,91 @@
 ﻿#pragma execution_character_set("utf-8") 
 #include "NothingMainWindow.h"
-#include "utils/NothingStyleHelper.h"
-#include "widgets/NothingTrayIcon.h"
 
+#include <QApplication>
 #include <QBoxLayout>
 #include <QMenu>
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QSystemTrayIcon>
+#include <QStackedWidget>
+#include <QLabel>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QSplitter>
 
+#include <Windows.h> // for SendMessage
+
+#include "utils/NothingStyleHelper.h"
+#include "widgets/NothingTrayIcon.h"
+#include "widgets/LeftBar.h"
+#include "widgets/RightTopButton.h"
+#include "widgets/ForumWidget.h"
+#include "widgets/DownloadWidget.h"
 
 NothingMainWindow::NothingMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , _tray(nullptr)
     , _trayMenu(nullptr)
 {
-    ui.setupUi(this);
-    //setWindowFlags(Qt::FramelessWindowHint);
-    //setAttribute(Qt::WA_TranslucentBackground);
+    setAutoFillBackground(true);
     setContentsMargins(0, 0, 0, 0);
+    
+    //设置背景白色
+    QPalette pal(palette());
+    pal.setColor(QPalette::Background, QColor(Qt::white));
+    setPalette(pal);
 
+    QWidget* centralWidget = new QWidget(this);
+    setCentralWidget(centralWidget);
 
-    QLayout* windowLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    setLayout(windowLayout);
-    windowLayout->setContentsMargins(0, 0, 0, 0);
-    windowLayout->setSpacing(0);
-    //
-    int shadowSize = 25;
-    QWidget* w = new QWidget(this);
-    w->setContentsMargins(shadowSize, shadowSize, shadowSize, shadowSize);
-    windowLayout->addWidget(w);
-    //
-    QLayout* rootLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    w->setLayout(rootLayout);
-    rootLayout->setContentsMargins(0, 0, 0, 0);
+    setMinimumSize(QSize(1280,800));
+    setWindowFlag(Qt::FramelessWindowHint,true);
+    //setAttribute(Qt::WA_TranslucentBackground);
+
+    QHBoxLayout* rootLayout = new QHBoxLayout(centralWidget);
     rootLayout->setSpacing(0);
+    rootLayout->setMargin(0);
 
-    QWidget* shadowClientWidget = new QWidget(w);
-    rootLayout->addWidget(shadowClientWidget);
-    //
-    QLayout* shadowClientLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    shadowClientLayout->setContentsMargins(0, 0, 0, 0);
-    shadowClientLayout->setSpacing(0);
-    shadowClientWidget->setLayout(shadowClientLayout);
-    shadowClientWidget->setAutoFillBackground(true);
-    shadowClientWidget->setCursor(QCursor(Qt::ArrowCursor));
-    //
-    // m_titleBar = new WizWindowTitleBar(shadowClientWidget, this, w, canResize);
-    //shadowClientLayout->addWidget(m_titleBar);
-    //
-    QWidget* m_clientWidget = new QWidget(shadowClientWidget);
-    shadowClientLayout->addWidget(m_clientWidget);
+    QHBoxLayout* leftBarLayout = new QHBoxLayout;
+    _leftBar = new LeftBar(this);
+    leftBarLayout->addWidget(_leftBar);
 
-    //
-    QBoxLayout* m_clientLayout = new QBoxLayout(QBoxLayout::TopToBottom);
-    m_clientWidget->setLayout(m_clientLayout);
-    //
-    m_clientLayout->setSpacing(0);
-    m_clientLayout->setContentsMargins(0, 0, 0, 0);
+    QVBoxLayout* rightLayout = new QVBoxLayout;
+
+    _topPanel = new QWidget(this);
+    QHBoxLayout* topLayout = new QHBoxLayout;
+
+    _backup = new QLabel;
+    _backup->setText("some function to complement...");
+    _backup->setAlignment(Qt::AlignCenter);
+
+    _rightTopButton = new RightTopButton;
+    topLayout->addWidget(_backup);
+    topLayout->addWidget(_rightTopButton);
+    topLayout->setStretch(0, 10);
+    topLayout->setStretch(1, 1);
+
+    _topPanel->setLayout(topLayout);
+
+    _stackWidget = new QStackedWidget(this);
+    rightLayout->addWidget(_topPanel);
+    rightLayout->addWidget(_stackWidget);
+
+    rootLayout->addLayout(leftBarLayout);
+    rootLayout->addLayout(rightLayout);
+    rootLayout->setStretch(0, 2);
+    rootLayout->setStretch(1, 6);
 
     setSystemTrayIconVisible(false);  // TODO: 为调试方便，暂时置为false
+
+    DownloadWidget* downloadWidget = new DownloadWidget;
+    _stackWidget->addWidget(downloadWidget);
+    ForumWidget* forumWidget = new ForumWidget;
+    _stackWidget->addWidget(forumWidget);
+
+    connect(_rightTopButton->_btnMini, &QPushButton::clicked, this, &NothingMainWindow::btnMiniClicked);
+    connect(_rightTopButton->_btnMax, &QPushButton::clicked, this, &NothingMainWindow::btnMaxClicked);
+    connect(_rightTopButton->_btnQuit, &QPushButton::clicked, this, &NothingMainWindow::btnQuitClicked);
 }
 
 void NothingMainWindow::closeEvent(QCloseEvent* event)
@@ -71,6 +97,29 @@ void NothingMainWindow::closeEvent(QCloseEvent* event)
         hide();
         event->ignore();
     }
+}
+
+void NothingMainWindow::mouseMoveEvent(QMouseEvent* event)
+{
+    if ( (event->buttons() && Qt::LeftButton) && event)
+    {
+        move(event->globalPos() - z);
+        event->accept();
+    }
+}
+
+void NothingMainWindow::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton)
+    {
+        z = event->globalPos() - this->pos();
+        event->accept();
+    }
+}
+
+void NothingMainWindow::mouseReleaseEvent(QMouseEvent* event)
+{
+    QMainWindow::mouseReleaseEvent(event);
 }
 
 void NothingMainWindow::setSystemTrayIconVisible(bool bVisible)
@@ -138,4 +187,24 @@ void NothingMainWindow::on_actionSettings_clicked()
 {
     // TODO:
 }
+
+void NothingMainWindow::btnMiniClicked()
+{
+    showMinimized();
+}
+
+void NothingMainWindow::btnMaxClicked()
+{
+    // 如果当前窗口已经是最大化
+    if (Qt::WindowMaximized & windowState())
+        showNormal();
+    else
+        showMaximized();
+}
+
+void NothingMainWindow::btnQuitClicked()
+{
+    close();
+}
+
 

@@ -4,6 +4,8 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 
+#include "LoginDialog.h"
+
 LoginButton::LoginButton(QWidget* parent) :
     QWidget(parent),
     _parent(parent),
@@ -39,6 +41,6 @@ void LoginButton::mouseReleaseEvent(QMouseEvent* event)
 
 void LoginButton::on_btn_clicked()
 {
-    QMessageBox::information(this, tr("Test"),
-        tr(" Test... "));
+    LoginDialog* dialog = new LoginDialog;
+    dialog->show();
 }

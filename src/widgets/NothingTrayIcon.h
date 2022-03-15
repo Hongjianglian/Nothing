@@ -2,7 +2,9 @@
 
 #include <QSystemTrayIcon>
 
-
+/// <summary>
+/// 托盘类，用于软件后台的托盘功能
+/// </summary>
 class NothingTrayIcon : public QSystemTrayIcon
 {
     Q_OBJECT

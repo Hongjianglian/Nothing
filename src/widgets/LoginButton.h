@@ -4,6 +4,9 @@
 #include <QPixmap>
 #include <QLabel>
 
+/// <summary>
+/// 登录按钮，同时用于显示头像
+/// </summary>
 class LoginButton : public QWidget
 {
     Q_OBJECT

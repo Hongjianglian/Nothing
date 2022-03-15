@@ -5,58 +5,64 @@
 #include <QPushButton>
 #include <QSpacerItem>
 #include <QListWidget>
+#include <QFont>
 
 #include "utils/NothingStyleHelper.h"
 #include "widgets/LoginButton.h"
+#include "widgets/NothingListWidget.h"
 
 LeftBar::LeftBar(QWidget* parent):
     QWidget(parent)
 {
-    //QPalette pal = palette();
-    //pal.setColor(QPalette::Window, QColor("#272727"));
-    //pal.setColor(QPalette::Base, QColor("#272727"));
-    //setPalette(pal);
-    //setAutoFillBackground(true);
-    //setStyleSheet("background-color: #448aff;");
-    QVBoxLayout* layout = new QVBoxLayout(this);
+    setMinimumSize(200,800);
+    setMaximumWidth(300);
+
+    setContentsMargins(0, 0, 0, 0);
+
+
+    QPalette pal(palette());
+
+    //设置背景黑色
+    pal.setColor(QPalette::Background, QColor(34, 37, 48));
+    setAutoFillBackground(true);
+    setPalette(pal);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout(this);
     
-
     btn_avatar = new LoginButton(this);
-    QHBoxLayout* hlayout = new QHBoxLayout;
-    hlayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Expanding));
-    hlayout->addWidget(btn_avatar);
-    hlayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Expanding));
+    QHBoxLayout* avatarLayout = new QHBoxLayout;
+    avatarLayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Expanding));
+    avatarLayout->addWidget(btn_avatar);
+    avatarLayout->addSpacerItem(new QSpacerItem(20, 20, QSizePolicy::Expanding));
+    
+    listWidget = new NothingListWidget;
+    listWidget->setFont(QFont("Microsoft YaHei"));
+    // 下载
+    QListWidgetItem* downloadItem = new QListWidgetItem("DOWNLOAD", listWidget);
+    QVariantMap downloadOption;
+    downloadOption.insert("color", QColor(Qt::green));
+    downloadItem->setIcon(Utils::awesome()->icon(fa::download, downloadOption));
+    // 论坛
+    QListWidgetItem* forumItem = new QListWidgetItem("FORUM", listWidget);
+    QVariantMap forumOption;
+    forumOption.insert("color", QColor(Qt::green));
+    //forumOption.insert("color-off", QColor(Qt::red));
 
+    forumItem->setIcon(Utils::awesome()->icon(fa::forumbee, forumOption));
 
+    listWidget->setItemHeight(60);
 
-    btn_download = new QPushButton("下载");
-    QVariantMap options_download;
-    options_download.insert("anim", qVariantFromValue(new QtAwesome(btn_download)));
-    btn_download->setIcon(Utils::awesome()->icon(fa::download, options_download));
+    listWidget->setCurrentRow(0);
 
-    btn_forum = new QPushButton("论坛");
-    QVariantMap options_forum;
-    options_forum.insert("anim", qVariantFromValue(new QtAwesome(btn_forum)));
-    btn_forum->setIcon(Utils::awesome()->icon(fa::forumbee, options_forum));
+    mainLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Expanding));
+    mainLayout->addLayout(avatarLayout);
+    mainLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Expanding));
+    mainLayout->addWidget(listWidget);
+}
 
-    listWidget = new QListWidget();
-    listWidget->setFrameShape(QListWidget::NoFrame);
-    QListWidgetItem* downloadItem = new QListWidgetItem();
-    listWidget->addItem(downloadItem);
-    QListWidgetItem* forumItem = new QListWidgetItem();
-    listWidget->addItem(forumItem);
-    listWidget->setItemWidget(downloadItem, btn_download);
-    listWidget->setItemWidget(forumItem,btn_forum);
-    layout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Expanding));
-    layout->addLayout(hlayout);
-    layout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Expanding));
-    layout->addWidget(listWidget);
-
-
-
-    setLayout(layout);
-
-
+QSize LeftBar::sizeHint() const
+{
+    return QSize(300, 800);
 }
 
 LeftBar::~LeftBar()

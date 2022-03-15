@@ -11,12 +11,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="src\ui\NothingMainWindow.ui" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\NothingMainWindow.cpp" />
     <ClCompile Include="src\widgets\CustomButton.cpp" />
+    <ClCompile Include="src\widgets\DoneItem.cpp" />
+    <ClCompile Include="src\widgets\DoneTab.cpp" />
+    <ClCompile Include="src\widgets\DownloadingItem.cpp" />
+    <ClCompile Include="src\widgets\DownloadingTab.cpp" />
+    <ClCompile Include="src\widgets\DownloadWidget.cpp" />
+    <ClCompile Include="src\widgets\ForumWidget.cpp" />
     <ClCompile Include="src\widgets\LoginButton.cpp" />
     <ClCompile Include="src\widgets\LoginDialog.cpp" />
     <ClCompile Include="src\widgets\NothingTrayIcon.cpp" />
@@ -28,6 +31,8 @@
     <ClCompile Include="src\utils\NothingPathResolve.cpp" />
     <ClCompile Include="src\utils\NothingStyleHelper.cpp" />
     <ClCompile Include="src\widgets\LeftBar.cpp" />
+    <ClCompile Include="src\widgets\NothingListWidget.cpp" />
+    <ClCompile Include="src\widgets\RightTopButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\NothingMainWindow.h" />
@@ -37,6 +42,14 @@
     <QtRcc Include="src\share\QtAwesome\QtAwesome.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="src\widgets\DoneItem.h" />
+    <QtMoc Include="src\widgets\DownloadingItem.h" />
+    <QtMoc Include="src\widgets\DoneTab.h" />
+    <QtMoc Include="src\widgets\DownloadingTab.h" />
+    <QtMoc Include="src\widgets\DownloadWidget.h" />
+    <QtMoc Include="src\widgets\ForumWidget.h" />
+    <QtMoc Include="src\widgets\RightTopButton.h" />
+    <QtMoc Include="src\widgets\NothingListWidget.h" />
     <QtMoc Include="src\widgets\LoginButton.h" />
     <QtMoc Include="src\widgets\LoginDialog.h" />
     <QtMoc Include="src\widgets\CustomButton.h" />

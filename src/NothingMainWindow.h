@@ -1,12 +1,19 @@
 ﻿#pragma once
 
 #include <QtWidgets/QMainWindow>
-#include "ui_NothingMainWindow.h"
 
-class NothingTrayIcon;
+QT_BEGIN_NAMESPACE
 class QSystemTrayIcon;
 class QMenu;
 class QCloseEvent;
+class QStackedWidget;
+class QPushButton;
+class QLabel;
+QT_END_NAMESPACE
+
+class NothingTrayIcon;
+class LeftBar;
+class RightTopButton;
 
 class NothingMainWindow : public QMainWindow
 {
@@ -16,13 +23,16 @@ public:
     NothingMainWindow(QWidget *parent = Q_NULLPTR);
 
 
-
-
     void setSystemTrayIconVisible(bool bVisible);
 
 
 protected:
-    void closeEvent(QCloseEvent* event) override;
+
+    virtual void closeEvent(QCloseEvent* event) override;
+    virtual void mouseMoveEvent(QMouseEvent* event) override;
+    virtual void mousePressEvent(QMouseEvent* event) override;
+    virtual void mouseReleaseEvent(QMouseEvent* event) override;
+
 private:
     void initTrayIcon(QSystemTrayIcon* trayIcon);
 
@@ -32,9 +42,23 @@ public slots:
 
     void on_actionExit_triggered();
     void on_actionSettings_clicked();
+
+    void btnMiniClicked();
+    void btnMaxClicked();
+    void btnQuitClicked();
+
 private:
     NothingTrayIcon* _tray;
     QMenu* _trayMenu;
 
-    Ui::NothingClientClass ui;
+    LeftBar* _leftBar;
+    RightTopButton* _rightTopButton;
+
+    QWidget* _topPanel;  // 用于放置占位widget、RightTopButton
+    QLabel* _backup; // 占位widget，位于RightTopButton左侧
+
+    QStackedWidget* _stackWidget;
+
+    QPoint z;
+
 };
