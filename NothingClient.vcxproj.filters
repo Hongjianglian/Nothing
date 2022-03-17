@@ -62,7 +62,7 @@
     <ClCompile Include="src\widgets\LoginButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\widgets\LoginDialog.cpp">
+    <ClCompile Include="src\widgets\LoginWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\widgets\NothingListWidget.cpp">
@@ -87,6 +87,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\widgets\DoneItem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\widgets\ServerTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -115,7 +118,7 @@
     <QtMoc Include="src\widgets\LoginButton.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="src\widgets\LoginDialog.h">
+    <QtMoc Include="src\widgets\LoginWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="src\widgets\NothingListWidget.h">
@@ -140,6 +143,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="src\widgets\DoneItem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="src\widgets\ServerTest.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -173,5 +179,10 @@
     <ClInclude Include="src\utils\NothingStyleHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="src\widgets\ServerTest.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

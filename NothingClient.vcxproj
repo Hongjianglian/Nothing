@@ -21,7 +21,7 @@
     <ClCompile Include="src\widgets\DownloadWidget.cpp" />
     <ClCompile Include="src\widgets\ForumWidget.cpp" />
     <ClCompile Include="src\widgets\LoginButton.cpp" />
-    <ClCompile Include="src\widgets\LoginDialog.cpp" />
+    <ClCompile Include="src\widgets\LoginWidget.cpp" />
     <ClCompile Include="src\widgets\NothingTrayIcon.cpp" />
     <ClCompile Include="src\share\jsoncpp\jsoncpp.cpp" />
     <ClCompile Include="src\share\QtAwesome\QtAwesome.cpp" />
@@ -33,6 +33,7 @@
     <ClCompile Include="src\widgets\LeftBar.cpp" />
     <ClCompile Include="src\widgets\NothingListWidget.cpp" />
     <ClCompile Include="src\widgets\RightTopButton.cpp" />
+    <ClCompile Include="src\widgets\ServerTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="src\NothingMainWindow.h" />
@@ -42,6 +43,7 @@
     <QtRcc Include="src\share\QtAwesome\QtAwesome.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="src\widgets\ServerTest.h" />
     <QtMoc Include="src\widgets\DoneItem.h" />
     <QtMoc Include="src\widgets\DownloadingItem.h" />
     <QtMoc Include="src\widgets\DoneTab.h" />
@@ -51,7 +53,7 @@
     <QtMoc Include="src\widgets\RightTopButton.h" />
     <QtMoc Include="src\widgets\NothingListWidget.h" />
     <QtMoc Include="src\widgets\LoginButton.h" />
-    <QtMoc Include="src\widgets\LoginDialog.h" />
+    <QtMoc Include="src\widgets\LoginWidget.h" />
     <QtMoc Include="src\widgets\CustomButton.h" />
     <QtMoc Include="src\widgets\NothingTrayIcon.h" />
     <ClInclude Include="src\share\jsoncpp\json\json-forwards.h" />
@@ -65,6 +67,9 @@
     <ClInclude Include="src\utils\NothingStyleHelper.h" />
     <ClInclude Include="src\utils\Singleton.h" />
     <QtMoc Include="src\utils\NothingLogger.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="src\widgets\ServerTest.ui" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4045A4C2-F54A-440D-BDCE-F01B681D5DC0}</ProjectGuid>
@@ -88,7 +93,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>5.13.0</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;network;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">

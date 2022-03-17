@@ -4,7 +4,8 @@
 #include <QMessageBox>
 #include <QMouseEvent>
 
-#include "LoginDialog.h"
+#include "LoginWidget.h"
+#include "ServerTest.h"
 
 LoginButton::LoginButton(QWidget* parent) :
     QWidget(parent),
@@ -41,6 +42,13 @@ void LoginButton::mouseReleaseEvent(QMouseEvent* event)
 
 void LoginButton::on_btn_clicked()
 {
-    LoginDialog* dialog = new LoginDialog;
-    dialog->show();
+    if (!bIsOnline)
+    {
+        //LoginWidget* dialog = new LoginWidget;
+        //dialog->setWindowModality(Qt::ApplicationModal);
+        //dialog->show();
+
+        ServerTest* dlg = new ServerTest;
+        dlg->show();
+    }
 }
